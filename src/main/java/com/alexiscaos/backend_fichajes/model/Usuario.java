@@ -33,8 +33,9 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "users_rol", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
 	private Set<Rol> roles = new HashSet<>();
 
-	@Column(name = "empresaId")
-	private Integer EmpresaId;
+	@ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "empresa_id")   
+    private Empresa empresa;
 
 	public Integer getIdUsuario() {
 		return idUsuario;
@@ -85,10 +86,7 @@ public class Usuario implements Serializable {
 	}
 
 	public Integer getEmpresaId() {
-		return EmpresaId;
+		return getEmpresaId();
 	}
 
-	public void setEmpresaId(Integer empresaId) {
-		EmpresaId = empresaId;
-	}
 }

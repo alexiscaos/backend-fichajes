@@ -1,9 +1,8 @@
 package com.alexiscaos.backend_fichajes.model;
 
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,11 +34,11 @@ public class Presencia implements Serializable {
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="fechaEntradaPre", nullable=false)
-    private Date fechaEntrada;
+    private LocalDateTime fechaEntrada;
 	
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="fechaSalidaPre")
-    private Date fechaSalida;
+    private LocalDateTime fechaSalida;
     
 	@Column (name="coordEntPre", length = 23, nullable=false)
     private String coordEnt;
@@ -103,11 +102,11 @@ public class Presencia implements Serializable {
 		return idEmpresa;
 	}
 
-	public Date getFechaSalida() {
+	public LocalDateTime getFechaSalida() {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(LocalDateTime fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 
@@ -123,11 +122,11 @@ public class Presencia implements Serializable {
 		this.idUsuario = idUsuario;
 	}
 
-	public Date getFechaEntrada() {
+	public LocalDateTime getFechaEntrada() {
 		return fechaEntrada;
 	}
 
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(LocalDateTime fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
 
@@ -158,7 +157,5 @@ public class Presencia implements Serializable {
 	public void setCentroId(Integer centroId) {
 		this.centroId = centroId;
 	}
-
-
 	
 }
