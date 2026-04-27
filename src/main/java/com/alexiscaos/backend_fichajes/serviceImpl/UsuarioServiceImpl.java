@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alexiscaos.backend_fichajes.DTO.UsuarioDTO;
+ import com.alexiscaos.backend_fichajes.model.Usuario;
 import com.alexiscaos.backend_fichajes.repository.UsuarioRepository;
 import com.alexiscaos.backend_fichajes.service.UsuarioService;
 
@@ -17,17 +17,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Override
-	public UsuarioDTO buscarPorId(Integer id) {
-		return null;
+	public Usuario Login(String username, String password) {
+		
+		return usuarioRepository.findByUsername(username)
+				.map(u -> u.getPassword().equals(password) ? u: null)
+				.orElseThrow(() -> new RuntimeException("No encontrado"))
+				;
 		
 	}
-
-	@Override
-	public List<UsuarioDTO> listarTodos() {
-		// TODO Auto-generated method stub
-		return usuarioRepository.findAll().stream()
-				.map(u-> new UsuarioDTO(u.getIdUsuario(), u.getUsername(), u.getEmail(), "Empresa ..."))
-				.toList();
-	}
 	
+	@Override
+	public Usuario Registrar(Usuario usuario) {
+		if(usuarioRepository.existsByUsername(usuario.getUsername())) {
+			throw new RuntimeException("El nombre de usuario ya existe");
+		}
+		return usuarioRepository.save(usuario);
+	}
 }

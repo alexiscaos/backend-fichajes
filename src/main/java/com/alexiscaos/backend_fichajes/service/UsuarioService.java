@@ -1,11 +1,12 @@
 package com.alexiscaos.backend_fichajes.service;
 
-import com.alexiscaos.backend_fichajes.DTO.UsuarioDTO;
-import java.util.List;
+import com.alexiscaos.backend_fichajes.model.Usuario;
+
 
 public interface UsuarioService {
 	
-	UsuarioDTO buscarPorId(Integer id);
-	List<UsuarioDTO> listarTodos();
+	Usuario Login(String username, String password);
+	
+	Usuario Registrar(Usuario usuario);
 	
 }
