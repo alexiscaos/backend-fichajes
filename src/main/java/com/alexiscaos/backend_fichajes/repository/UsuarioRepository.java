@@ -1,4 +1,7 @@
 package com.alexiscaos.backend_fichajes.repository;
+
+import org.springframework.data.domain.Page; // Correcto
+import org.springframework.data.domain.Pageable; // Correcto
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +13,23 @@ import com.alexiscaos.backend_fichajes.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
-    Usuario findByUsername(@Param("username") String userName);
+	List<Usuario> findByUsername(@Param("username") String username);
+	
+	Usuario findByCodEmpleado(@Param("codEmpleado") Integer codEmpleado);
+	
+	Usuario findByidUsuario(@Param("idUsuario") Integer idUsuario);
 
-	List<Usuario> findByName(@Param("name") String name);
+	List<Usuario> findByNameContainingIgnoreCaseOrLastnameContainingIgnoreCase(String name, String lastname);
 
+	Page <Usuario> findAll(Pageable pageable);
+	
+	Page  <Usuario> findByNameContainingIgnoreCaseOrLastnameContainingIgnoreCase(String name, String lastname, Pageable pageable);
+	
+	boolean existsByEmail(String email);
+	
+	boolean existsByCodEmpleado(Integer codEmpleado);
+	
+	boolean existsByUsername(String username);
+	
+	boolean existsByphone(String phone);
 }
