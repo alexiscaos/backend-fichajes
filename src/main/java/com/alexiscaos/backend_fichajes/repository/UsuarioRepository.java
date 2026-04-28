@@ -32,7 +32,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
 	boolean existsByUsername(String username);
 	
-	boolean existsByphone(String phone);
+	boolean existsByPhone(String phone);
 	
 	
 	

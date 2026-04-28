@@ -21,8 +21,8 @@ public class Usuario implements Serializable {
 	@Column(name = "username_usr", nullable = false, length = 60)
 	private String username;
 
-	@Column(name = "password_usr", nullable = false, length = 12)
-	private transient  String password;
+	@Column(name = "password_usr", nullable = false, length = 60)
+	private String password;
 
 	@Column(name = "name_usr", nullable = false, length = 60)
 	private String name;
@@ -31,7 +31,7 @@ public class Usuario implements Serializable {
 	private String email;
 	
 	@Column(name = "phone_usr", nullable = false)
-	private transient String phone;
+	private String phone;
 	
 	@Column(name = "lastname_usr", nullable = false, length = 60)
 	private String lastname;

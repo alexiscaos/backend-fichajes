@@ -19,7 +19,7 @@ public class Centro implements Serializable {
 	@Column(name = "nombre_cntr", nullable = false, length = 60)
 	private String nombreCentro;
 	
-	@Column(name = "nombre_cntr", nullable = false, length = 60)
+	@Column(name = "direcc_cntr", nullable = false, length = 60)
 	private String direccCentro;
 	
 	@Column(name = "latitud_cntr", nullable = false)

@@ -21,5 +21,15 @@ public class AuthController {
 			return e.getMessage();
 		}
 	}
+	
+	@PostMapping("/register")
+	public String registrarUsuario(@RequestBody Usuario usuario) {
+		try {
+			Usuario nuevoUsuario = usuarioService.Registrar(usuario);
+			return "Usuario creado exitosamente: " + nuevoUsuario.getUsername();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
 
 }
