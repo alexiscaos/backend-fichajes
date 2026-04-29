@@ -3,14 +3,17 @@ package com.alexiscaos.backend_fichajes.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder; // Asegúrate de este import
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.alexiscaos.backend_fichajes.model.Usuario;
 import com.alexiscaos.backend_fichajes.repository.UsuarioRepository;
-import com.alexiscaos.backend_fichajes.service.UsuarioService;
+import com.alexiscaos.backend_fichajes.service.AuthService;
+import com.alexiscaos.backend_fichajes.service.JwtService;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class AuthServiceImpl implements AuthService{
+	@Autowired
+	private JwtService jwtService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -19,13 +22,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Override
-	public Usuario Login(String username, String password) {
+	public String Login(String username, String password) {
 		
 		Usuario usuario = usuarioRepository.findByUsername(username)
 				.orElseThrow(() -> new RuntimeException("No encontrado"));
 		
 		if(passwordEncoder.matches(password, usuario.getPassword())) {
-			return usuario;
+			return jwtService.generateToken(usuario);
 		} else {
 			throw new RuntimeException("Contraseña incorrecta");
 		}

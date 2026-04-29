@@ -3,9 +3,9 @@ package com.alexiscaos.backend_fichajes.service;
 import com.alexiscaos.backend_fichajes.model.Usuario;
 
 
-public interface UsuarioService {
+public interface AuthService {
 	
-	Usuario Login(String username, String password);
+	String Login(String username, String password);
 	
 	Usuario Registrar(Usuario usuario);
 	
