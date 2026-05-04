@@ -21,12 +21,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> iniciarSesion(@RequestBody Usuario loginData) {
         try {
-
-            String token = authService.Login(loginData.getUsername(), loginData.getPassword());            
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            
-            return ResponseEntity.ok(response);
+            Map<String, String> tokens = authService.Login(loginData.getUsername(), loginData.getPassword());
+            return ResponseEntity.ok(tokens);
             
         } catch (RuntimeException e) {
             Map<String, String> error = new HashMap<>();
@@ -44,6 +40,27 @@ public class AuthController {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
+        try {
+            String refreshToken = request.get("refreshToken");
+            
+            if (refreshToken == null || refreshToken.isBlank()) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Refresh token requerido");
+                return ResponseEntity.badRequest().body(error);
+            }
+            
+            Map<String, String> newTokens = authService.refreshAccessToken(refreshToken);
+            return ResponseEntity.ok(newTokens);
+            
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
     }
 }
