@@ -19,15 +19,15 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-	@Value("${project.jwt.secret}")
+    @Value("${project.jwt.secret}")
     private String secretKey;
-	
-	@Value("${project.jwt.expiration:1800000}")
-	private long accessTokenExpiration;
-	
-	private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000;
+    
+    @Value("${project.jwt.expiration:1800000}")
+    private long accessTokenExpiration;
+    
+    private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000;
 
-	public String generateAccessToken(Usuario usuario) {
+    public String generateAccessToken(Usuario usuario) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("idUsuario", usuario.getIdUsuario());
         claims.put("nombre", usuario.getName());
@@ -35,54 +35,56 @@ public class JwtService {
         
         return createToken(claims, usuario.getUsername(), accessTokenExpiration);
     }
-	
-	public String generateRefreshToken(Usuario usuario) {
-		return createToken(new HashMap<>(), usuario.getUsername(), REFRESH_TOKEN_EXPIRATION);
-	}
-	
-	private String createToken(Map<String, Object> claims, String subject, long expiration) {
+    
+    public String generateRefreshToken(Usuario usuario) {
+        return createToken(new HashMap<>(), usuario.getUsername(), REFRESH_TOKEN_EXPIRATION);
+    }
+    
+    private String createToken(Map<String, Object> claims, String subject, long expiration) {
         return Jwts.builder()
-                .claims(claims)
+                .claims(claims) // En versiones nuevas esto sigue funcionando pero se recomienda .claims().add(claims)
                 .subject(subject)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }
-	
-	public boolean isTokenValid(String token) {
-		try {
-			Jwts.parserBuilder()
-				.setSigningKey(getSignInKey())
-				.build()
-				.parseClaimsJws(token);
-			return true;
-		} catch (JwtException | IllegalArgumentException e) {
-			return false;
-		}
-	}
-	
-	public String extractUsername(String token) {
-		return getClaims(token).getSubject();
-	}
-	
-	public Integer extractIdUsuario(String token) {
-		Object idUsuario = getClaims(token).get("idUsuario");
-		if (idUsuario instanceof Integer) {
-			return (Integer) idUsuario;
-		} else if (idUsuario instanceof Long) {
-			return ((Long) idUsuario).intValue();
-		}
-		return null;
-	}
-	
-	private Claims getClaims(String token) {
-		return Jwts.parserBuilder()
-			.setSigningKey(getSignInKey())
-			.build()
-			.parseClaimsJws(token)
-			.getBody();
-	}
+    
+    public boolean isTokenValid(String token) {
+        try {
+            // CAMBIO: Se usa Jwts.parser() en lugar de parserBuilder()
+            Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+    
+    public String extractUsername(String token) {
+        return getClaims(token).getSubject();
+    }
+    
+    public Integer extractIdUsuario(String token) {
+        Object idUsuario = getClaims(token).get("idUsuario");
+        if (idUsuario instanceof Integer) {
+            return (Integer) idUsuario;
+        } else if (idUsuario instanceof Long) {
+            return ((Long) idUsuario).intValue();
+        }
+        return null;
+    }
+    
+    private Claims getClaims(String token) {
+        // CAMBIO: parser() + verifyWith() + build() + parseSignedClaims()
+        return Jwts.parser()
+            .verifyWith(getSignInKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload(); // CAMBIO: getPayload() reemplaza a getBody()
+    }
 
     private SecretKey getSignInKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));

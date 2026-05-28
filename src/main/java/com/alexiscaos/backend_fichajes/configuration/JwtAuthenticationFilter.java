@@ -31,18 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	                                 HttpServletResponse response, 
 	                                 FilterChain filterChain) throws ServletException, IOException {
 		try {
-			// Extraer token del header Authorization
 			String token = extractTokenFromRequest(request);
-			
-			// Si el token existe y es válido
 			if (token != null && jwtService.isTokenValid(token)) {
-				// Extraer username del token
 				String username = jwtService.extractUsername(token);
-				
-				// Cargar detalles del usuario
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				
-				// Crear objeto de autenticación
+
 				UsernamePasswordAuthenticationToken authentication = 
 					new UsernamePasswordAuthenticationToken(
 						userDetails, 
@@ -54,26 +47,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					new WebAuthenticationDetailsSource().buildDetails(request)
 				);
 				
-				// Establecer la autenticación en el contexto de seguridad
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		} catch (Exception e) {
 			logger.error("No se pudo establecer autenticación de usuario", e);
 		}
 		
-		// Continuar con el siguiente filtro
 		filterChain.doFilter(request, response);
 	}
 	
-	/**
-	 * Extrae el JWT del header Authorization
-	 * Formato esperado: "Bearer <token>"
-	 */
+
 	private String extractTokenFromRequest(HttpServletRequest request) {
 		String authHeader = request.getHeader("Authorization");
 		
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
-			return authHeader.substring(7);  // Remover "Bearer " (7 caracteres)
+			return authHeader.substring(7); 
 		}
 		
 		return null;

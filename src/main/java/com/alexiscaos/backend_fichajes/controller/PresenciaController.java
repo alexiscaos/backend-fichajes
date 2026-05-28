@@ -20,16 +20,11 @@ public class PresenciaController {
 	@Autowired
 	private PresenciaService presenciaService;
 	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
 	@GetMapping("/mis-presencias")
 	public ResponseEntity<?> obtenerMisPresencias(Authentication authentication) {
 		try {
 			String username = authentication.getName();
-			Usuario usuario = usuarioRepository.findByUsername(username)
-					.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-			List<Presencia> presencias = presenciaService.obtenerPresenciasPorUsuario(usuario.getIdUsuario());
+			List<Presencia> presencias = presenciaService.obtenerPresenciasPorUsername(username);
 			return ResponseEntity.ok(presencias);
 		} catch (Exception e) {
 			Map<String, String> error = new HashMap<>();
@@ -49,4 +44,19 @@ public class PresenciaController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 		}
 	}
+	
+	@PostMapping("/usuario/{usuarioId}")
+	public ResponseEntity<?> obtenerPresenciasUsuarioPost(@PathVariable Integer usuarioId, Authentication authentication) {
+		try {
+			Presencia presencia = presenciaService.guardarPresencia(usuarioId);
+			return ResponseEntity.ok(presencia);
+		} catch (Exception e) {
+			Map<String, String> error = new HashMap<>();
+			error.put("error", e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
+	}
+	
+	
+	
 }

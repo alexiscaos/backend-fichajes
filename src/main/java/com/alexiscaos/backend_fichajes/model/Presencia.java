@@ -2,6 +2,7 @@ package com.alexiscaos.backend_fichajes.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -21,7 +22,7 @@ public class Presencia implements Serializable {
 	private Integer idPresencia;
 	
 	@Column(name = "fecha_pre", nullable = false)
-	private Date fechaPresencia;
+	private LocalDateTime fechaPresencia;
 	
 	@Column(name = "hora_pre", nullable = false)
 	private BigDecimal horaPresencia;
@@ -42,7 +43,7 @@ public class Presencia implements Serializable {
 	private boolean remoto;
 	
 	@Column(name = "created_at", nullable = false)
-	private Date createdAt;
+	private LocalDateTime createdAt;
 	
 	@Column(name = "created_by", nullable = false)
 	private Integer createdBy;
@@ -52,4 +53,100 @@ public class Presencia implements Serializable {
 	
 	@Column(name = "updated_at", nullable = true)
 	private Date updatedAt;
+
+	public Integer getIdPresencia() {
+		return idPresencia;
+	}
+
+	public void setIdPresencia(Integer idPresencia) {
+		this.idPresencia = idPresencia;
+	}
+
+	public LocalDateTime getFechaPresencia() {
+		return fechaPresencia;
+	}
+
+	public void setFechaPresencia(LocalDateTime fechaPresencia) {
+		this.fechaPresencia = fechaPresencia;
+	}
+
+	public BigDecimal getHoraPresencia() {
+		return horaPresencia;
+	}
+
+	public void setHoraPresencia(BigDecimal horaPresencia) {
+		this.horaPresencia = horaPresencia;
+	}
+
+	public Boolean getIsEntrada() {
+		return isEntrada;
+	}
+
+	public void setIsEntrada(Boolean isEntrada) {
+		this.isEntrada = isEntrada;
+	}
+
+	public Integer getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Integer usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public Integer getCentroId() {
+		return centroId;
+	}
+
+	public void setCentroId(Integer centroId) {
+		this.centroId = centroId;
+	}
+
+	public Integer getDispositivoId() {
+		return dispositivoId;
+	}
+
+	public void setDispositivoId(Integer dispositivoId) {
+		this.dispositivoId = dispositivoId;
+	}
+
+	public boolean isRemoto() {
+		return remoto;
+	}
+
+	public void setRemoto(boolean remoto) {
+		this.remoto = remoto;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Integer updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 }

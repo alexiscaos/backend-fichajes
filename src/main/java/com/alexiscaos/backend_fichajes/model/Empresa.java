@@ -18,5 +18,5 @@ public class Empresa implements Serializable {
 	private Integer idEmpresa;
 	
 	@Column(name = "nombre_empr", nullable = false, length = 60)
-	private String nombre_empr;
+	private String nombreEmpresa;
 }
