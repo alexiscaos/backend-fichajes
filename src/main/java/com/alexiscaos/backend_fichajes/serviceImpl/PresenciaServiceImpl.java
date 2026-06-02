@@ -10,6 +10,7 @@ import com.alexiscaos.backend_fichajes.service.PresenciaService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PresenciaServiceImpl implements PresenciaService {
@@ -42,5 +43,16 @@ public class PresenciaServiceImpl implements PresenciaService {
 		presencia.setCreatedAt(java.time.LocalDateTime.now());
 		presencia.setCreatedBy(usuario);
 		return presenciaRepository.save(presencia);
+	}
+	
+	public List<Presencia> presenciasDelDia(Integer usuarioId) {
+		java.time.LocalDateTime inicioDia = java.time.LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+		java.time.LocalDateTime finDia = java.time.LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+		return presenciaRepository.findByFechaPresenciaBetweenAndUsuarioId(inicioDia, finDia, usuarioId);
+				
+	}
+	
+	public Optional<Presencia> obtenerUltimaPresencia(Integer usuarioId) {
+		return presenciaRepository.findLastPresenciaByUsuarioId(usuarioId);
 	}
 }

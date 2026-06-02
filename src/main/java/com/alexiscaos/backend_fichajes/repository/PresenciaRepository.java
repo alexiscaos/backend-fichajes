@@ -14,6 +14,8 @@ public interface PresenciaRepository extends JpaRepository<Presencia, Integer> {
 	
 	Optional <Presencia> findByFechaPresenciaBetween(@Param("fechaInicio") LocalDateTime fechaInicio, @Param("fechaFin") LocalDateTime fechaFin);
 	
-	Optional <Presencia> findByFechaPresenciaBetweenAndUsuarioId(@Param("fechaInicio") LocalDateTime fechaInicio, @Param("fechaFin") LocalDateTime fechaFin, @Param("usuarioId") Integer usuarioId);
+	List <Presencia> findByFechaPresenciaBetweenAndUsuarioId(@Param("fechaInicio") LocalDateTime fechaInicio, @Param("fechaFin") LocalDateTime fechaFin, @Param("usuarioId") Integer usuarioId);
 	
+	Optional <Presencia> findLastPresenciaByUsuarioId(@Param("usuarioId") Integer usuarioId);
+
 }

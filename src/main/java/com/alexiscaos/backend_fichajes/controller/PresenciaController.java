@@ -12,6 +12,7 @@ import com.alexiscaos.backend_fichajes.repository.UsuarioRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/presencia")
@@ -33,7 +34,7 @@ public class PresenciaController {
 		}
 	}
 	
-	@GetMapping("/usuario/{usuarioId}")
+	@GetMapping("/presencia/{usuarioId}")
 	public ResponseEntity<?> obtenerPresenciasUsuario(@PathVariable Integer usuarioId, Authentication authentication) {
 		try {
 			List<Presencia> presencias = presenciaService.obtenerPresenciasPorUsuario(usuarioId);
@@ -45,8 +46,8 @@ public class PresenciaController {
 		}
 	}
 	
-	@PostMapping("/usuario/{usuarioId}")
-	public ResponseEntity<?> obtenerPresenciasUsuarioPost(@PathVariable Integer usuarioId, Authentication authentication) {
+	@PostMapping("guardarPresencia/{usuarioId}")
+	public ResponseEntity<?> guardarPresencia(@PathVariable Integer usuarioId, Authentication authentication) {
 		try {
 			Presencia presencia = presenciaService.guardarPresencia(usuarioId);
 			return ResponseEntity.ok(presencia);
@@ -57,6 +58,35 @@ public class PresenciaController {
 		}
 	}
 	
+	@GetMapping("/{usuarioId}")
+	public ResponseEntity<?> obtenerPresenciasDelDia(@PathVariable Integer usuarioId, Authentication authentication) {
+		try {
+			List<Presencia> presencias = presenciaService.presenciasDelDia(usuarioId);
+			return ResponseEntity.ok(presencias);
+		} catch (Exception e) {
+			Map<String, String> error = new HashMap<>();
+			error.put("error", e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
+	}
 	
-	
+	@GetMapping("/ultima/{usuarioId}")
+	public ResponseEntity<?> obtenerUltimaPresencia(@PathVariable Integer usuarioId, Authentication authentication) {
+	    try {
+	        Optional<Presencia> presenciaOpt = presenciaService.obtenerUltimaPresencia(usuarioId);
+
+	        if (presenciaOpt.isPresent()) {
+	            return ResponseEntity.ok(presenciaOpt.get());
+	        } else {
+	            Map<String, String> error = new HashMap<>();
+	            error.put("mensaje", "No se encontró ninguna presencia para el usuario con ID: " + usuarioId);
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	        }
+
+	    } catch (Exception e) {
+	        Map<String, String> error = new HashMap<>();
+	        error.put("error", e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	    }
+	}
 }
