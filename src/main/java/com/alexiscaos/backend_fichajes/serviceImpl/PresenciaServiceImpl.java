@@ -11,6 +11,7 @@ import com.alexiscaos.backend_fichajes.service.PresenciaService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.math.BigDecimal;
 
 @Service
 public class PresenciaServiceImpl implements PresenciaService {
@@ -30,13 +31,11 @@ public class PresenciaServiceImpl implements PresenciaService {
 		return presenciaRepository.findByUsuarioId(usuarioId);
 	}
 	
-	public Presencia guardarPresencia( Integer usuario) {
+	public Presencia guardarPresencia( Integer usuario, BigDecimal tiempo, Boolean entrada) {
 		Presencia presencia = new Presencia();
-		BigDecimal bigDecimalHora = new BigDecimal("10"); 
-		presencia.setUsuarioId(usuario);
-		presencia.setHoraPresencia(bigDecimalHora);
+		presencia.setHoraPresencia(tiempo);
 		presencia.setFechaPresencia(java.time.LocalDateTime.now());
-		presencia.setIsEntrada(true);
+		presencia.setIsEntrada(entrada);
 		presencia.setCentroId(1);
 		presencia.setDispositivoId(1);
 		presencia.setRemoto(false);

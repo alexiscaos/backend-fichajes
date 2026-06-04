@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.alexiscaos.backend_fichajes.model.Usuario;
 import com.alexiscaos.backend_fichajes.repository.UsuarioRepository;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +49,9 @@ public class PresenciaController {
 	}
 	
 	@PostMapping("guardarPresencia/{usuarioId}")
-	public ResponseEntity<?> guardarPresencia(@PathVariable Integer usuarioId, Authentication authentication) {
+	public ResponseEntity<?> guardarPresencia(@PathVariable Integer usuarioId, @PathVariable BigDecimal tiempo, @PathVariable Boolean entrada, Authentication authentication) {
 		try {
-			Presencia presencia = presenciaService.guardarPresencia(usuarioId);
+			Presencia presencia = presenciaService.guardarPresencia(usuarioId, tiempo, entrada);
 			return ResponseEntity.ok(presencia);
 		} catch (Exception e) {
 			Map<String, String> error = new HashMap<>();
