@@ -31,16 +31,8 @@ public class PresenciaServiceImpl implements PresenciaService {
 		return presenciaRepository.findByUsuarioId(usuarioId);
 	}
 	
-	public Presencia guardarPresencia( Integer usuario, BigDecimal tiempo, Boolean entrada) {
-		Presencia presencia = new Presencia();
-		presencia.setHoraPresencia(tiempo);
-		presencia.setFechaPresencia(java.time.LocalDateTime.now());
-		presencia.setIsEntrada(entrada);
-		presencia.setCentroId(1);
-		presencia.setDispositivoId(1);
-		presencia.setRemoto(false);
-		presencia.setCreatedAt(java.time.LocalDateTime.now());
-		presencia.setCreatedBy(usuario);
+	public Presencia guardarPresencia( Presencia presencia) {
+
 		return presenciaRepository.save(presencia);
 	}
 	

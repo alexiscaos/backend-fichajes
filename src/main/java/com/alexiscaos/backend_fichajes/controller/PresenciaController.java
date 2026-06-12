@@ -48,11 +48,11 @@ public class PresenciaController {
 		}
 	}
 	
-	@PostMapping("guardarPresencia/{usuarioId}")
-	public ResponseEntity<?> guardarPresencia(@PathVariable Integer usuarioId, @PathVariable BigDecimal tiempo, @PathVariable Boolean entrada, Authentication authentication) {
+	@PostMapping("/guardarPresencia")
+	public ResponseEntity<?> guardarPresencia(@RequestBody Presencia presencia, Authentication authentication) {
 		try {
-			Presencia presencia = presenciaService.guardarPresencia(usuarioId, tiempo, entrada);
-			return ResponseEntity.ok(presencia);
+			Presencia newPresencia = presenciaService.guardarPresencia(presencia);
+			return ResponseEntity.ok(newPresencia);
 		} catch (Exception e) {
 			Map<String, String> error = new HashMap<>();
 			error.put("error", e.getMessage());

@@ -53,8 +53,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) 
             .cors(cors -> cors.configurationSource(request -> {
                 var cfg = new CorsConfiguration();
-                cfg.setAllowedOrigins(List.of("http://localhost:4200")); 
-                cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                cfg.setAllowedOrigins(List.of(
+                		"http://192.168.1.129:4200",
+                		"http://localhost:4200",
+                		"http://192.168.1.131:4200"
+                		)); 
+                cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 cfg.setAllowedHeaders(List.of("*"));
                 return cfg;
             }))

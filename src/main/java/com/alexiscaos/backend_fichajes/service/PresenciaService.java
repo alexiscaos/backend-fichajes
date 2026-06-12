@@ -10,7 +10,7 @@ public interface PresenciaService {
 	
 	List<Presencia> obtenerPresenciasPorUsername(String username);
 	List<Presencia> obtenerPresenciasPorUsuario(Integer usuarioId);
-	Presencia guardarPresencia( Integer usuario, BigDecimal tiempo, Boolean entrada);
+	Presencia guardarPresencia( Presencia presencia);
 	List<Presencia> presenciasDelDia(Integer usuarioId);
 	Optional<Presencia> obtenerUltimaPresencia(Integer usuarioId);
 }
